@@ -199,7 +199,7 @@ function render(lang){
   document.getElementById('it').setAttribute('aria-pressed',lang==='it');
   try{localStorage.setItem('lang',lang);}catch(e){}
 }
-function setTab(n){var g=n==='games';document.getElementById('paneMods').style.display=g?'none':'';document.getElementById('games').style.display=g?'':'none';document.getElementById('tabMods').setAttribute('aria-pressed',!g);document.getElementById('tabGames').setAttribute('aria-pressed',g);}
+function setTab(n){var g=n==='games';document.getElementById('paneMods').style.display=g?'none':'';document.querySelector('.how').style.display=g?'none':'';document.querySelector('.end').style.display=g?'none':'';document.getElementById('games').style.display=g?'':'none';document.getElementById('tabMods').setAttribute('aria-pressed',!g);document.getElementById('tabGames').setAttribute('aria-pressed',g);}
 document.getElementById('tabMods').onclick=function(){setTab('mods');};
 document.getElementById('tabGames').onclick=function(){setTab('games');};
 document.getElementById('en').onclick=function(){render('en');};
