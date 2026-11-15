@@ -200,28 +200,28 @@ var MODS = [
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
 var NS='dotbl0t-hn-mods';
 var POLLS=[{id:'horde',q:['Would you play Horde of Zombies?','Giocheresti a Horde of Zombies?'],o:[['Yes, sounds great!','Sì, mi piace!'],['Maybe','Forse'],['Not for me','Non fa per me']]},{id:'hordeprice',q:['Is $5.50 a fair price for Horde of Zombies?','Va bene 5,50 $ come prezzo per Horde of Zombies?'],o:[['Yes, fair price','Sì, prezzo giusto'],['Too expensive','Troppo caro'],['Too cheap','Troppo poco']]}];
-var PC={};
-var CUR='en';
+var PC={},OFF={},CUR='en',LOADED={};
 function pkey(p,i){return 'p-'+p.id+'-'+i;}
-function pget(p,i){return fetch('https://abacus.jasoncameron.dev/get/'+NS+'/'+pkey(p,i)).then(function(r){return r.ok?r.json():{value:0};}).then(function(j){return j.value||0;}).catch(function(){return 0;});}
-function pload(p){return Promise.all(p.o.map(function(x,i){return pget(p,i);})).then(function(a){PC[p.id]=a;});}
+function pget(p,i){return fetch('https://abacus.jasoncameron.dev/get/'+NS+'/'+pkey(p,i)).then(function(r){if(r.status===404)return 0;if(!r.ok)throw new Error('bad');return r.json().then(function(j){return j.value||0;});});}
+function pload(p){return Promise.all(p.o.map(function(x,i){return pget(p,i);})).then(function(a){PC[p.id]=a;OFF[p.id]=false;}).catch(function(){OFF[p.id]=true;});}
 function pvoted(p){try{var v=localStorage.getItem('poll-'+p.id);return v===null?-1:parseInt(v,10);}catch(e){return -1;}}
-function pvote(p,i){try{localStorage.setItem('poll-'+p.id,String(i));}catch(e){}PC[p.id]=PC[p.id]||p.o.map(function(){return 0;});PC[p.id][i]++;renderPolls(CUR);fetch('https://abacus.jasoncameron.dev/hit/'+NS+'/'+pkey(p,i)).catch(function(){});}
+function pvote(p,i){try{localStorage.setItem('poll-'+p.id,String(i));}catch(e){}var c=PC[p.id]=PC[p.id]||p.o.map(function(){return 0;});c[i]++;renderPolls(CUR);fetch('https://abacus.jasoncameron.dev/hit/'+NS+'/'+pkey(p,i)).then(function(r){if(!r.ok)throw new Error('bad');return r.json();}).then(function(j){PC[p.id][i]=j.value;OFF[p.id]=false;renderPolls(CUR);}).catch(function(){OFF[p.id]=true;renderPolls(CUR);});}
 function renderPolls(lang){
   CUR=lang;var el=document.getElementById('polls');if(!el)return;var L=lang==='it'?1:0;
-  el.innerHTML='<h2 class="polls-h">'+(L?'Sondaggio':'Poll')+'</h2>'+POLLS.map(function(p){
-    var v=pvoted(p);var c=PC[p.id]||[];var tot=c.reduce(function(a,b){return a+b;},0);
+  el.innerHTML='<h2 class="polls-h">'+(L?'Sondaggi':'Polls')+'</h2>'+POLLS.map(function(p){
+    var v=pvoted(p);var cc=(PC[p.id]||[]).slice();while(cc.length<p.o.length)cc.push(0);if(v>=0&&cc[v]<1)cc[v]=1;
+    var off=!!OFF[p.id];var tot=cc.reduce(function(a,b){return a+b;},0);
     var h='<div class="poll"><h3>'+esc(p.q[L])+'</h3>';
     h+=p.o.map(function(o,i){
       if(v<0)return '<button class="popt" data-p="'+p.id+'" data-i="'+i+'">'+esc(o[L])+'</button>';
-      var pct=tot?Math.round((c[i]||0)*100/tot):0;
-      return '<div class="pres'+(i===v?' mine':'')+'"><div class="pbar" style="width:'+pct+'%"></div><span>'+esc(o[L])+'</span><b>'+pct+'%</b></div>';
+      var pct=off?(i===v?100:0):(tot?Math.round(cc[i]*100/tot):0);
+      return '<div class="pres'+(i===v?' mine':'')+'"><div class="pbar" style="width:'+pct+'%"></div><span>'+esc(o[L])+'</span><b>'+(off?(i===v?(L?'Il tuo voto':'Your vote'):''):pct+'%')+'</b></div>';
     }).join('');
-    if(v>=0)h+='<small>'+(L?'Grazie per aver votato! Voti totali: ':'Thanks for voting! Total votes: ')+tot+'</small>';
+    if(v>=0)h+='<small>'+(off?(L?'Risultati in tempo reale non disponibili ora. Il tuo voto è salvato su questo dispositivo.':'Live results are unavailable right now. Your vote is saved on this device.'):(L?'Grazie per aver votato! Voti totali: ':'Thanks for voting! Total votes: ')+tot)+'</small>';
     return h+'</div>';
   }).join('');
   el.querySelectorAll('.popt').forEach(function(b){b.onclick=function(){var p=POLLS.filter(function(x){return x.id===b.getAttribute('data-p');})[0];pvote(p,parseInt(b.getAttribute('data-i'),10));};});
-  POLLS.forEach(function(p){if(!PC['l'+p.id]){PC['l'+p.id]=1;pload(p).then(function(){renderPolls(CUR);});}});
+  POLLS.forEach(function(p){if(!LOADED[p.id]){LOADED[p.id]=1;pload(p).then(function(){renderPolls(CUR);});}});
 }
 function render(lang){
   var t=T[lang];
