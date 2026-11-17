@@ -64,6 +64,8 @@ footer{border-top:1px solid var(--line)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:28px;padding-bottom:28px;font-size:14px;color:#a99f90}
 .tabs{display:flex;gap:8px;padding:8px 0 0;border-bottom:1px solid var(--line)}
 .tabs button{padding:14px 22px;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);cursor:pointer;font:600 16px 'Space Grotesk',sans-serif}
+.tabs a{padding:14px 22px;border-bottom:3px solid transparent;color:var(--muted);font:600 16px 'Space Grotesk',sans-serif;text-decoration:none}
+.tabs a[aria-pressed="true"]{color:var(--text);border-bottom-color:var(--accent)}
 .tabs button[aria-pressed="true"]{color:var(--text);border-bottom-color:var(--accent)}
 .tab-games{padding-top:56px}
 .card .tag{align-self:flex-start;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -89,15 +91,15 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 <nav>
 <div class="logo">dotBL0t<span> / mods</span></div>
 <div class="links">
-<a href="#mods" data-t="navMods"></a>
-<a href="#how" data-t="navHow"></a>
+<a href="index.html#mods" data-t="navMods"></a>
+<a href="index.html#how" data-t="navHow"></a>
 <a href="https://steamcommunity.com/profiles/76561198051025893/" data-t="navProfile"></a>
 <a href="https://mytakgames.itch.io/">itch.io</a>
 <a href="https://www.youtube.com/channel/UC0LC0rJEAduKhbZlKEiEBrw">YouTube</a>
 <div class="lang"><button id="en" aria-pressed="true">EN</button><button id="it" aria-pressed="false">IT</button></div>
 </div>
 </nav>
-<div class="tabs"><button id="tabMods" aria-pressed="true" data-t="tabMods"></button><button id="tabGames" aria-pressed="false" data-t="tabGames"></button><button id="tabMc" aria-pressed="false" data-t="tabMc"></button></div>
+<div class="tabs"><a id="tabMods" href="index.html" aria-pressed="true" data-t="tabMods"></a><a id="tabGames" href="games.html" aria-pressed="false" data-t="tabGames"></a><a id="tabMc" href="minecraft.html" aria-pressed="false" data-t="tabMc"></a></div>
 <div id="paneMods">
 <section class="hero">
 <div class="txt">
@@ -148,6 +150,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 <footer><div class="wrap"><div data-t="foot1"></div><div data-t="foot2"></div></div></footer>
 
 <script>
+var PAGE='mods';
 var T = {
 en: {
 tabMods:'Hello Neighbor mods', tabMc:'Minecraft mods', mcTitle:'Minecraft mods', mcText:'My Minecraft mods on CurseForge.', cfcta:'View on CurseForge →', tabGames:'My games', gamesTitle:'My games', gamesText:'Original games I am making myself.', gsoon:'Coming soon',
@@ -258,12 +261,11 @@ function render(lang){
   try{localStorage.setItem('lang',lang);}catch(e){}
 }
 function setTab(n){var m=n==='mods',g=n==='games',c=n==='mc';document.getElementById('paneMods').style.display=m?'':'none';document.querySelector('.how').style.display=m?'':'none';document.querySelector('.end').style.display=m?'':'none';document.getElementById('games').style.display=g?'':'none';document.getElementById('mc').style.display=c?'':'none';document.getElementById('tabMods').setAttribute('aria-pressed',m);document.getElementById('tabGames').setAttribute('aria-pressed',g);document.getElementById('tabMc').setAttribute('aria-pressed',c);}
-document.getElementById('tabMods').onclick=function(){setTab('mods');};
-document.getElementById('tabGames').onclick=function(){setTab('games');};
-document.getElementById('tabMc').onclick=function(){setTab('mc');};
 document.getElementById('en').onclick=function(){render('en');};
 document.getElementById('it').onclick=function(){render('it');};
-render('en');
+var L0='en';try{L0=localStorage.getItem('lang')||'en';}catch(e){}
+render(L0==='it'?'it':'en');
+setTab(PAGE);
 </script>
 </body>
 </html>
