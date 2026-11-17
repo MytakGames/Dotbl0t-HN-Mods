@@ -266,6 +266,11 @@ document.getElementById('it').onclick=function(){render('it');};
 var L0='en';try{L0=localStorage.getItem('lang')||'en';}catch(e){}
 render(L0==='it'?'it':'en');
 setTab(PAGE);
+var TABS={mods:['index.html','dotBL0t Hello Neighbor Mods'],games:['games.html','dotBL0t Games'],mc:['minecraft.html','dotBL0t Minecraft Mods']};
+function pageFromUrl(){var p=location.pathname;return /games/.test(p)?'games':/minecraft/.test(p)?'mc':'mods';}
+function go(n,push){setTab(n);document.title=TABS[n][1];if(push){try{history.pushState({n:n},'',TABS[n][0]);}catch(e){}}window.scrollTo(0,0);}
+[['tabMods','mods'],['tabGames','games'],['tabMc','mc']].forEach(function(x){document.getElementById(x[0]).addEventListener('click',function(e){if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;e.preventDefault();go(x[1],true);});});
+window.addEventListener('popstate',function(){go(pageFromUrl(),false);});
 </script>
 </body>
 </html>
