@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>dotBL0t Hello Neighbor Mods</title>
+<title>My Tak Things - Hello Neighbor Mods</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;family=Creepster&amp;display=swap" rel="stylesheet">
 <style>
 :root{--bg:#14110f;--card:#1f1a16;--line:#3a322a;--text:#f3ead8;--muted:#cfc5b4;--accent:#ff8a2b}
@@ -89,7 +89,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 <body>
 <div class="wrap">
 <nav>
-<div class="logo">dotBL0t<span> / mods</span></div>
+<div class="logo">My Tak<span> Things</span></div>
 <div class="links">
 <a href="index.html#mods" data-t="navMods"></a>
 <a href="index.html#how" data-t="navHow"></a>
@@ -167,7 +167,7 @@ how2h:'Sosed subclass', how2p:'On BeginPlay it spawns the actors into the match.
 how3h:'Widgets and Sequencer', how3p:'HUDs can show during cutscenes too, using a blueprint actor with a custom event in the Event Track.',
 endTitle:'Get the mods on the Workshop.', endText:'Everything I publish for Hello Neighbor is on my Steam profile, one click away.',
 endBtn1:'Open the Workshop', endBtn2:'dotBL0t on Steam',
-foot1:'© dotBL0t. Unofficial fan site, not affiliated with tinyBuild or Eerie Guest Studios.',
+foot1:'© My Tak Things. Unofficial fan site, not affiliated with tinyBuild or Eerie Guest Studios.',
 foot2:'Hello Neighbor is a trademark of its respective owners.', cta:'View on Workshop →'
 },
 it: {
@@ -185,7 +185,7 @@ how2h:'Sottoclasse di Sosed', how2p:'Al BeginPlay genera gli attori nella partit
 how3h:'Widget e Sequencer', how3p:'Gli HUD compaiono anche nelle cutscene, con un attore blueprint e un evento custom nell’Event Track.',
 endTitle:'Scarica le mod dal Workshop.', endText:'Tutto quello che pubblico per Hello Neighbor è sul mio profilo Steam, a un click da qui.',
 endBtn1:'Apri il Workshop', endBtn2:'dotBL0t su Steam',
-foot1:'© dotBL0t. Sito non ufficiale, non affiliato a tinyBuild o Eerie Guest Studios.',
+foot1:'© My Tak Things. Sito non ufficiale, non affiliato a tinyBuild o Eerie Guest Studios.',
 foot2:'Hello Neighbor è un marchio dei rispettivi proprietari.', cta:'Vedi sul Workshop →'
 }
 };
@@ -264,7 +264,7 @@ document.getElementById('it').onclick=function(){render('it');};
 var L0='en';try{L0=localStorage.getItem('lang')||'en';}catch(e){}
 render(L0==='it'?'it':'en');
 setTab(PAGE);
-var TABS={mods:['index.html','dotBL0t Hello Neighbor Mods'],games:['games.html','dotBL0t Games'],mc:['minecraft.html','dotBL0t Minecraft Mods']};
+var TABS={mods:['index.html','My Tak Things - Hello Neighbor Mods'],games:['games.html','My Tak Things - Games'],mc:['minecraft.html','My Tak Things - Minecraft Mods']};
 function pageFromUrl(){var p=location.pathname;return /games/.test(p)?'games':/minecraft/.test(p)?'mc':'mods';}
 function go(n,push){setTab(n);document.title=TABS[n][1];if(push){try{history.pushState({n:n},'',TABS[n][0]);}catch(e){}}window.scrollTo(0,0);}
 [['tabMods','mods'],['tabGames','games'],['tabMc','mc']].forEach(function(x){document.getElementById(x[0]).addEventListener('click',function(e){if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;e.preventDefault();go(x[1],true);});});
