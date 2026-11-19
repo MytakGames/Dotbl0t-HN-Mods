@@ -240,7 +240,7 @@ function renderPolls(lang){
 function render(lang){
   var t=T[lang];
   document.documentElement.lang=lang;
-  document.querySelectorAll('[data-t]').forEach(function(el){el.textContent=t[el.getAttribute('data-t')];});
+  document.querySelectorAll('[data-t]').forEach(function(el){el.textContent=t[el.getAttribute('data-t')];});if(window.CUR)fixFoot();
   document.getElementById('grid').innerHTML=MODS.map(function(m){
     var d=lang==='it'?m[4]:m[3];
     var foot=m[1]?'<a href="https://steamcommunity.com/sharedfiles/filedetails/?id='+m[1]+'">'+t.cta+'</a>':'<span class="soon">'+(m[5]?m[5][lang==='it'?1:0]:t.soon)+'</span>';
@@ -260,7 +260,8 @@ function render(lang){
   document.getElementById('it').setAttribute('aria-pressed',lang==='it');
   try{localStorage.setItem('lang',lang);}catch(e){}
 }
-function setTab(n){var m=n==='mods',g=n==='games',c=n==='mc';document.getElementById('paneMods').style.display=m?'':'none';document.querySelector('.how').style.display=m?'':'none';document.querySelector('.end').style.display=m?'':'none';document.getElementById('games').style.display=g?'':'none';document.getElementById('mc').style.display=c?'':'none';document.getElementById('tabMods').setAttribute('aria-pressed',m);document.getElementById('tabGames').setAttribute('aria-pressed',g);document.getElementById('tabMc').setAttribute('aria-pressed',c);}
+function fixFoot(){var f=document.querySelectorAll('footer [data-t]'),t=T[document.documentElement.lang]||T.en,mods=window.CUR==='mods';f[0].textContent=mods?t[f[0].getAttribute('data-t')]:'© My Tak Things.';f[1].style.display=mods?'':'none';}
+function setTab(n){window.CUR=n;var m=n==='mods',g=n==='games',c=n==='mc';document.getElementById('paneMods').style.display=m?'':'none';document.querySelector('.how').style.display=m?'':'none';document.querySelector('.end').style.display=m?'':'none';document.getElementById('games').style.display=g?'':'none';document.getElementById('mc').style.display=c?'':'none';document.getElementById('tabMods').setAttribute('aria-pressed',m);document.getElementById('tabGames').setAttribute('aria-pressed',g);document.getElementById('tabMc').setAttribute('aria-pressed',c);fixFoot();}
 document.getElementById('en').onclick=function(){render('en');};
 document.getElementById('it').onclick=function(){render('it');};
 var L0='en';try{L0=localStorage.getItem('lang')||'en';}catch(e){}
